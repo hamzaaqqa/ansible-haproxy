@@ -1,0 +1,8 @@
+package_depencieces: 
+  - vim
+  - bash-completion
+  - wget
+  - curl
+  - telnet
+  - net-tools
+  - yum-utils

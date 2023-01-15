@@ -1,0 +1,17 @@
+- name: Install keepalived (Centos/RHEL)
+  ansible.builtin.dnf:
+    name: httpd
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+
+- name: Enable keepalived and start 
+  ansible.builtin.systemd:
+    name: keepalived
+    state: started
+    enabled: yes
+
+- name: Generate keepalived file
+  ansible.builtin.template:
+    src: keepalived.j2
+    dest: /etc/keepalived/keepalived.conf

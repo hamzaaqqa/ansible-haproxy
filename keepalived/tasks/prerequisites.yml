@@ -1,0 +1,55 @@
+
+- name: Enable SELinux
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Install some packages needed to configure the nodes
+  ansible.builtin.package:
+    name: "{{ item }}"
+  loop:
+    - "{{ basic_packages }}"
+  
+- name: Disable firewalld service
+  ansible.builtin.service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  ansible.builtin.shell: |
+    swapoff -a
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+.*)$'
+    replace: '# \1'
+
+- ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '{{keepalive_ipv4_ip_forward}}'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.ens33.arp_ignore
+    value: '{{keepalived_eth0_arp_ignore}}'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- ansible.posix.sysctl:
+    name: net.ipv4.conf.ens33.arp_announce
+    value: '{{keepalived_eth0_arp_announce}}'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- ansible.posix.sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: '{{keepalived_nonlocal_bind}}'
+    sysctl_set: yes
+    state: present
+    reload: yes
