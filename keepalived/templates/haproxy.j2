@@ -29,7 +29,7 @@ frontend {{ haproxy_frontend.frontend_name }}
   bind *:{{ haproxy_frontend.haproxy_frontend_port }}
   mode tcp
   option tcplog
-  default_backend {{ haproxy_ba.backend_name }}
+  default_backend {{ haproxy_backend.backend_name }}
 
 backend {{ haproxy_backend.backend_name }}
     mode tcp
@@ -38,5 +38,5 @@ backend {{ haproxy_backend.backend_name }}
     balance roundrobin
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
     {% for backend in haproxy_backend_servers %}
-    server {{ backend.name }} {{ backend.address }} check 
+    server  {{ backend.name }}  {{ backend.address }} check 
     {% endfor %}

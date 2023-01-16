@@ -1,38 +1,26 @@
-# Keepalived config
-keepalived_package_name: "keepalived"
-keepalived_service_name: "keepalived"
-keepalived_config_file_path: "/etc/keepalived/keepalived.conf"
-keepalived_daemon_options_file_path: "/etc/sysconfig/keepalived"
+haproxy_global:
+    haproxy_log_socket: /var/log/haproxy.log
+    haproxy_log_level: warning
+    haproxy_user: haproxy
+    haproxy_group: haproxy
+    haproxy_socket: /run/haproxy/admin.sock
+    pidfile: /var/run/haproxy.pid
 
-# Prerequisites for keepalived
-keepalive_ipv4_ip_forward: 1
-keepalived_nonlocal_bind: 1
-keepalived_eth0_arp_ignore: 1
-keepalived_eth0_arp_announce: 2
+haproxy_stats:
+    stats_port: 9000
+    stats_user: admin
+    stats_password: admin
 
-# Keepalived config file
-keepalived_master:
-  router: LVS_DEVEL
-  script: /usr/bin/killall -0 haproxy
-  state: MASTER
-  interface: ens33
-  virtual_router_id: 51
-  priority: 101
-  advert_int: 1
-  auth_pass: 1111
-  unicast_src_ip: 192.168.111.30
-  unicast_peer: 192.168.111.40
-  virtual_ip: 192.168.111.100/24
+haproxy_frontend:
+    frontend_name: Masters
+    haproxy_frontend_ip: "*"
+    haproxy_frontend_port: 6443
 
-keepalived_backup:
-  router: LVS_DEVEL
-  script: /usr/bin/killall -0 haproxy
-  state: BACKUP
-  interface: ens33
-  virtual_router_id: 51
-  priority: 100
-  advert_int: 1
-  auth_pass: 1111
-  unicast_src_ip: 192.168.111.40
-  unicast_peer: 192.168.111.30
-  virtual_ip: 192.168.111.100/24
+haproxy_backend:
+    backend_name: Workers
+
+haproxy_backend_servers :
+   - name: master01
+     address: "192.168.111.10"
+   - name: master02
+     address: "192.168.111.20"
