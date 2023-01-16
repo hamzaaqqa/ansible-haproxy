@@ -1,8 +1,10 @@
 - name: Add the OS specific variables
-  include_vars: "../vars/keepalived.yml"
-  when:
-     -  ansible_hostname == "Haproxy01"
-     -  ansible_hostname == "Haproxy02"
+  include_vars:  "{{ item }}"
+  with_first_found:
+    - keepalived.yml
+    - haproxy.yml
+    - ansible_hostname == "Haproxy01"
+
 
 - name: Prerequisites
   include: tasks/prerequisites.yml

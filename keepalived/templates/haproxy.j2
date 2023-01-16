@@ -29,7 +29,7 @@ frontend {{ haproxy_frontend.frontend_name }}
   bind *:{{ haproxy_frontend.haproxy_frontend_port }}
   mode tcp
   option tcplog
-  default_backend {{ haproxy_backend.backend_name }}
+  default_backend {{ haproxy_ba.backend_name }}
 
 backend {{ haproxy_backend.backend_name }}
     mode tcp
