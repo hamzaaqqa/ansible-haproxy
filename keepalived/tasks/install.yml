@@ -4,6 +4,12 @@
     state: latest
     #when: ansible_os_family == "RedHat"
 
+- name: Install haproxy (Centos/RHEL)
+  ansible.builtin.dnf:
+    name: haproxy
+    state: latest
+    #when: ansible_os_family == "RedHat"
+
 - name: Generate keepalived file master
   ansible.builtin.template:
     src: keepalived_master.j2
@@ -15,6 +21,18 @@
     src: keepalived_backup.j2
     dest: /etc/keepalived/keepalived.conf
   when: ansible_hostname == "Haproxy02"
+
+- name: Generate keepalived file backup
+  ansible.builtin.template:
+    src: haproxy.j2
+    dest: /etc/haproxy/haproxy.conf
+  when: ansible_hostname == "Haproxy01"
+
+- name: Enable haproxy and start
+  systemd:
+    name: haproxy.service
+    state: started
+    #enable: yes
 
 - name: Enable keepalived and start
   systemd:

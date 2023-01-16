@@ -1,0 +1,25 @@
+haproxy_global:
+  - haproxy_log_socket: /var/log/haproxy.log
+  - haproxy_log_level: warning
+  - haproxy_user: haproxy
+  - haproxy_group: haproxy
+  - haproxy_socket: /run/haproxy/admin.sock
+  - pidfile: /var/run/haproxy.pid
+haproxy_stats:
+  - stats_port: 9000
+  - stats_user: admin
+  - stats_password: admin
+
+haproxy_frontend:
+  - frontend_name: masters
+  - haproxy_frontend_ip: "*"
+  - haproxy_frontend_port: 6443
+
+haproxy_backend:
+  - backend_name: masters
+
+haproxy_backend_servers :
+  - name: master01
+    address: "192.168.111.10"
+  - name: master02
+    address: "192.168.111.20"

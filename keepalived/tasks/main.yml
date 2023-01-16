@@ -1,11 +1,17 @@
 - name: Add the OS specific variables
-  include_vars: "{{ item }}"
-  when: (ansible_os_family == 'Haproxy01') and (ansible_os_family == 'Haproxy02')
+  include_vars: "../vars/keepalived.yml"
+  when:
+     -  ansible_hostname == "Haproxy01"
+     -  ansible_hostname == "Haproxy02"
 
 - name: Prerequisites
   include: tasks/prerequisites.yml
-  when: " 'RedHat' in ansible_os_family"
+  when:
+     - ansible_hostname == "Haproxy01"
+     - ansible_hostname == "Haproxy02"
 
 - name: install
   include: tasks/install.yml
-  when: " 'Haproxy01' and 'Haproxy02'in ansible_hostname"
+  when:
+     - ansible_hostname == "Haproxy01"
+     - ansible_hostname == "Haproxy02"
