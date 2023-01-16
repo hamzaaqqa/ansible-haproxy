@@ -1,8 +1,6 @@
 - name: Add the OS specific variables
   include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yml"
-    - "{{ ansible_os_family }}.yml"
+  when: (ansible_os_family == 'Haproxy01') and (ansible_os_family == 'Haproxy02')
 
 - name: Prerequisites
   include: tasks/prerequisites.yml
