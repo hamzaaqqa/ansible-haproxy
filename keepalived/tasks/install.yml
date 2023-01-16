@@ -1,6 +1,6 @@
 - name: Install keepalived (Centos/RHEL)
   ansible.builtin.dnf:
-    name: httpd
+    name: keepalived
     state: latest
   when: ansible_os_family == "RedHat"
 
@@ -13,5 +13,12 @@
 
 - name: Generate keepalived file
   ansible.builtin.template:
-    src: keepalived.j2
+    src: keepalived_master.j2
     dest: /etc/keepalived/keepalived.conf
+  when: ansible_hostname == "Haproxy01"
+
+- name: Generate keepalived file
+  ansible.builtin.template:
+    src: keepalived_backup.j2
+    dest: /etc/keepalived/keepalived.conf
+  when: ansible_hostname == "Haproxy02"

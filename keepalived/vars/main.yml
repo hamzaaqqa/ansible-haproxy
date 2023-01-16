@@ -9,7 +9,7 @@ keepalived_nonlocal_bind: 1
 keepalived_eth0_arp_ignore: 1
 keepalived_eth0_arp_announce: 2
 # Keepalived config file
-keepalived:
+keepalived_master:
   router: LVS_DEVEL
   script: /usr/bin/killall -0 haproxy
   state: MASTER
@@ -20,4 +20,17 @@ keepalived:
   auth_pass: 1111
   unicast_src_ip: 192.168.111.30
   unicast_peer: 192.168.111.40
+  virtual_ip: 192.168.111.100/24
+
+keepalived_backup:
+  router: LVS_DEVEL
+  script: /usr/bin/killall -0 haproxy
+  state: BACKUP
+  interface: ens33
+  virtual_router_id: 51
+  priority: 100
+  advert_int: 1
+  auth_pass: 1111
+  unicast_src_ip: 192.168.111.40
+  unicast_peer: 192.168.111.30
   virtual_ip: 192.168.111.100/24
