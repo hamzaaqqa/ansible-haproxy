@@ -1,1 +1,1 @@
-# ansible-haproxy
+ANSIBLE FOR HAPROXY CLUSTER WITH 2 SERVERS 

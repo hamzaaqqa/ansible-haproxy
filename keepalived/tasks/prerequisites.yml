@@ -1,15 +1,12 @@
-
-- name: Enable SELinux
-  ansible.posix.selinux:
-    policy: targeted
-    state: permissive
+- name: Disable SELinux
+  selinux: state=disabled
 
 - name: Install some packages needed to configure the nodes
   ansible.builtin.package:
     name: "{{ item }}"
   loop:
     - "{{ basic_packages }}"
-  
+
 - name: Disable firewalld service
   ansible.builtin.service:
     name: firewalld

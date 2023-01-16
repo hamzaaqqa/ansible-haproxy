@@ -12,7 +12,7 @@ vrrp_instance haproxy-vip {
   state {{ keepalived_backup['state'] }}
   priority {{ keepalived_backup['priority'] }}
   interface {{ keepalived_backup['interface'] }}                       # Network card
-  virtual_router_id {{ keepalived_backup_master['virtual_router_id'] }}
+  virtual_router_id {{ keepalived_backup['virtual_router_id'] }}
   advert_int {{ keepalived_backup['advert_int'] }}
   authentication {
     auth_type PASS

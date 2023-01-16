@@ -2,23 +2,22 @@
   ansible.builtin.dnf:
     name: keepalived
     state: latest
-  when: ansible_os_family == "RedHat"
+    #when: ansible_os_family == "RedHat"
 
-
-- name: Enable keepalived and start 
-  ansible.builtin.systemd:
-    name: keepalived
-    state: started
-    enabled: yes
-
-- name: Generate keepalived file
+- name: Generate keepalived file master
   ansible.builtin.template:
     src: keepalived_master.j2
     dest: /etc/keepalived/keepalived.conf
   when: ansible_hostname == "Haproxy01"
 
-- name: Generate keepalived file
+- name: Generate keepalived file backup
   ansible.builtin.template:
     src: keepalived_backup.j2
     dest: /etc/keepalived/keepalived.conf
   when: ansible_hostname == "Haproxy02"
+
+- name: Enable keepalived and start
+  systemd:
+    name: keepalived.service
+    state: started
+    #enable: yes

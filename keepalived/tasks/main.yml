@@ -1,0 +1,13 @@
+- name: Add the OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: Prerequisites
+  include: tasks/prerequisites.yml
+  when: " 'RedHat' in ansible_os_family"
+
+- name: install
+  include: tasks/install.yml
+  when: " 'Haproxy01' and 'Haproxy02'in ansible_hostname"

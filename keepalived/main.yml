@@ -1,3 +1,0 @@
-- name: Prerequisites
-  include: prerequisites.yml
-  when: "'RedHat' in ansible_os_family"

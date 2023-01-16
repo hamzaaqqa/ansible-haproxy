@@ -1,4 +1,5 @@
-package_depencieces: 
+
+basic_packages:
   - vim
   - bash-completion
   - wget
